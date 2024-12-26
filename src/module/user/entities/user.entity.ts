@@ -1,6 +1,7 @@
 import { BaseEntityCustom } from "src/common/abstract/baseEntitycustom.entity";
 import { EntityName } from "src/common/enums/entitName.enum";
-import { Column, CreateDateColumn, Entity, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, UpdateDateColumn } from "typeorm";
+import { UserAddress, UserAddressEntity } from "./address,entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntityCustom{
@@ -22,5 +23,6 @@ export class UserEntity extends BaseEntityCustom{
     create_at:Date
     @UpdateDateColumn({type:"time with time zone"})
     update_at:Date
-
+    @OneToMany(()=>UserAddressEntity,address=>address.user)
+    addressList:UserAddressEntity[]
 }
