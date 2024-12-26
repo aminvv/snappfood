@@ -1,7 +1,7 @@
-import { BaseEntityCustom } from "src/common/abstract/baseEntitycustom.entity";
-import { EntityName } from "src/common/enums/entitName.enum";
+import { BaseEntityCustom } from "src/common/abstract/baseEntityCustom.entity";
+import { EntityName } from "src/common/enums/entityName.enum";
 import { Column, CreateDateColumn, Entity, OneToMany, UpdateDateColumn } from "typeorm";
-import { UserAddress, UserAddressEntity } from "./address,entity";
+import { UserAddressEntity } from "./address,entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntityCustom{

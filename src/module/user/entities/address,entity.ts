@@ -1,5 +1,5 @@
-import { BaseEntityCustom } from "src/common/abstract/baseEntitycustom.entity";
-import { EntityName } from "src/common/enums/entitName.enum";
+import { BaseEntityCustom } from "src/common/abstract/baseEntityCustom.entity";
+import { EntityName } from "src/common/enums/entityName.enum";
 import { Column, CreateDateColumn, Entity, ManyToOne } from "typeorm";
 import { UserEntity } from "./user.entity";
 
