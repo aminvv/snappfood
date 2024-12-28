@@ -17,7 +17,7 @@ import { UserEntity } from "./user.entity";
         postal_code:string
         @Column()
         userId:number
-        @CreateDateColumn({type:"time with time zone"})
+        @CreateDateColumn()
         create_at:Date
         @ManyToOne(()=>UserEntity,user=>user.addressList,{onDelete:"CASCADE"})
         user:UserEntity
