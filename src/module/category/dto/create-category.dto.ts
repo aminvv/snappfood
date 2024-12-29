@@ -7,9 +7,9 @@ export class CreateCategoryDto{
     @ApiProperty()
     slug:string
     @ApiPropertyOptional({ nullable: true ,format:"binary" })
-    image: String
+    image: string
     @ApiPropertyOptional({ nullable: true, enum:ShowType })
-    gender: string
+    show: boolean
     @ApiProperty()
     parentId:number
 }

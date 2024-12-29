@@ -6,26 +6,19 @@ import { ApiConsumes } from '@nestjs/swagger';
 import { swaggerConsumes } from 'src/common/enums/swaggerConsumes.enum';
 import { uploadFileS3 } from 'src/common/interceptors/upload -file.interceptor';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { uploadedOptionalFiles } from 'src/common/decorator/upload-file.decorator';
 @ApiTags('category')
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly categoryService: CategoryService) { }
 
-  
+
   @Post("/upload")
   @ApiConsumes(swaggerConsumes.MultiPartData)
   @UseInterceptors(uploadFileS3('image'))
-  uploadFile(@UploadedFile(new ParseFilePipe({
-      validators: [
-          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
-          new FileTypeValidator({ fileType: "image/(png|jpg|jpeg|webp)" })
-      ]
-  }))image:Express.Multer.File,@Body()CreateCategoryDto:CreateCategoryDto) { 
-    const {size,mimetype,fieldname,originalname,filename}=image
-      return{
-          image:{size,mimetype,fieldname,originalname,filename},
-          CreateCategoryDto
-      }
+
+  uploadFile(@uploadedOptionalFiles() image: Express.Multer.File, @Body() CreateCategoryDto: CreateCategoryDto) {
+    return this.categoryService.create(CreateCategoryDto,image)
   }
-}
- 
+  }
