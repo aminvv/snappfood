@@ -1,4 +1,4 @@
-import { Body, Controller } from '@nestjs/common';
+import { Body, Controller, Get } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { ApiTags } from '@nestjs/swagger';
 import { FileTypeValidator, Injectable, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
@@ -20,5 +20,10 @@ export class CategoryController {
 
   uploadFile(@uploadedOptionalFiles() image: Express.Multer.File, @Body() CreateCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(CreateCategoryDto,image)
+  }
+
+  @Get("/findAll")
+  findAll(){
+    return this.categoryService.findAll()
   }
   }

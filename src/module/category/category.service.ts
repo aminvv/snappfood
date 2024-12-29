@@ -17,19 +17,26 @@ export class CategoryService {
 
 
     async create(createCategoryDto: CreateCategoryDto, image: Express.Multer.File) {
-        let { slug, title, show } = createCategoryDto
+        let { slug, title, show,parentId } = createCategoryDto
         const {Location} = await this.S3Service.uploadFile(image, 'snappfood')
         const category = await this.findBySlug(slug)
         if (category) throw new ConflictException('already  exist  category')
         if (isBoolean(show)) {
             show = toBoolean(show)
         }
+        let parent:CategoryEntity=null
+        if(parentId && !isNaN(parentId)){
+            parent = await this.categoryRepository.findOneBy({ id: parentId });
+        }
+      
+        
         await this.categoryRepository.insert({
             title,
             slug,
             show,
-            image:Location
-        })
+            image:Location,
+            parentId:parent?.id
+        }) 
         return{
             message:"create category successfully"
         }
@@ -39,5 +46,20 @@ export class CategoryService {
 
     async findBySlug(slug:string){
         return await this.categoryRepository.findOneBy({slug})
+    }
+
+    async findAll(){
+        const [categories,count]=await this.categoryRepository.findAndCount({
+            where:{},
+            relations:{
+                parent:true
+            },
+            select:{
+                parent:{
+                    title:true
+                }
+            }
+        })
+        return categories
     }
 }
