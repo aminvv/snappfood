@@ -21,4 +21,4 @@ import { UserEntity } from "./user.entity";
         create_at:Date
         @ManyToOne(()=>UserEntity,user=>user.addressList,{onDelete:"CASCADE"})
         user:UserEntity
-     }
+     } 

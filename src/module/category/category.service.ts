@@ -1,12 +1,13 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/category.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { S3Service } from '../s3/s3.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { isBoolean, toBoolean } from 'src/common/utility/function.utils';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginationGenerator, paginationSolver } from 'src/common/utility/pagination.utils';
+import { UpdateCategory } from './dto/update-category';
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class CategoryService {
 
     async create(createCategoryDto: CreateCategoryDto, image: Express.Multer.File) {
         let { slug, title, show, parentId } = createCategoryDto
-        const { Location } = await this.S3Service.uploadFile(image, 'snappfood')
+        const { Location, Key } = await this.S3Service.uploadFile(image, 'snappfood')
         const category = await this.findBySlug(slug)
         if (category) throw new ConflictException('already  exist  category')
         if (isBoolean(show)) {
@@ -36,6 +37,7 @@ export class CategoryService {
             title,
             slug,
             show,
+            imageKey: Key,
             image: Location,
             parentId: parent?.id
         })
@@ -67,8 +69,43 @@ export class CategoryService {
             order: { id: "DESC" }
         })
         return {
-            pagination: PaginationGenerator(page , limit, count),
+            pagination: PaginationGenerator(page, limit, count),
             categories
         }
+    }
+
+    async updateCategory(id: number, image: Express.Multer.File, updateCategory: UpdateCategory) {
+        const { parentId, show, slug, title } = updateCategory
+        const category = await this.categoryRepository.findOneBy({ id })
+        if (!category) throw new NotFoundException("category Not Found")
+        const updateObject: DeepPartial<CategoryEntity> = {}
+        if (image) {
+            const { Location, Key } = await this.S3Service.uploadFile(image, "snappfood")
+            if (Location) {
+                updateObject["image"] = Location
+                updateObject["imageKey"] = Key
+                if(category?.imageKey){
+                await this.S3Service.deleteFile(category?.imageKey)
+
+                }
+            }
+        }
+        if (title) updateObject["title"] = title
+        if (show && isBoolean(show)) updateObject["show"] = isBoolean(show)
+        if (parentId && isNaN(parseInt(parentId.toString()))) {
+            const category = await this.categoryRepository.findOneBy({ parentId })
+            if (!category) throw new NotFoundException("not found category parentId")
+            updateObject["parentId"] = category.id
+        }
+        if (slug) {
+            const category = await this.findBySlug(slug)
+            if (category &&category.id !== id) throw new NotFoundException("categoryNot found")
+                updateObject["slug"]=slug
+        }
+        await this.categoryRepository.update({id},updateObject)
+        return {
+            message:"updated Successfully" 
+        }
+
     }
 }
