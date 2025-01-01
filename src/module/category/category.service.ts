@@ -46,10 +46,16 @@ export class CategoryService {
         }
     }
 
-
-
     async findBySlug(slug: string) {
-        return await this.categoryRepository.findOneBy({ slug })
+        const  category= await this.categoryRepository.findOne({ 
+            where:{
+                slug
+            },
+            relations:{
+                children:true
+            }
+         })
+         return category
     }
 
     async findAll(paginationDto: PaginationDto) {
@@ -107,5 +113,19 @@ export class CategoryService {
             message:"updated Successfully" 
         }
 
+    }
+
+    async remove(id:number){
+        const category=await this.categoryRepository.findOneBy({id})
+        if(!category)throw new  NotFoundException("category not found")
+            await this.categoryRepository.delete({id})
+
+   
+            if(category?.imageKey){
+            await this.S3Service.deleteFile(category?.imageKey)
+            }
+        return{
+            message: "delete category successfully"
+        }
     }
 }

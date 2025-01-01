@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, Query } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FileTypeValidator, Injectable, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
@@ -31,6 +31,11 @@ export class CategoryController {
     return this.categoryService.findAll(paginationDto)
   }
 
+  @Get('find-By-slug/:slug')
+  findBySlug(@Param('slug') slug:string){
+    return this.categoryService.findBySlug(slug)
+  }
+
 
   @Put("/update-category/:id")
   @ApiConsumes(swaggerConsumes.MultiPartData)
@@ -38,4 +43,12 @@ export class CategoryController {
   updateCategory(@Param("id") id:number, @UploadedFile() image:Express.Multer.File ,@Body() updateCategory:UpdateCategory){
     return this.categoryService.updateCategory(id,image,updateCategory)
   }
+
+  @Delete("/delete-category/:id")
+  remove(@Param("id") id:number  ){
+    return this.categoryService.remove(id)
+  }
+
+
+
   } 
