@@ -57,6 +57,13 @@ export class CategoryService {
          })
          return category
     }
+    async findById(id: number) {
+        const  category= await this.categoryRepository.findOneBy({id})
+        if (!category) {
+            throw new NotFoundException('Category not found');
+          }
+         return category
+    }
 
     async findAll(paginationDto: PaginationDto) {
         const { limit, page, skip } = paginationSolver(paginationDto)

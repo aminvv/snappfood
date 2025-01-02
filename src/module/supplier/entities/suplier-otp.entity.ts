@@ -1,11 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
 import { BaseEntityCustom } from "src/common/abstract/baseEntityCustom.entity";
 import { EntityName } from "src/common/enums/entityName.enum";
 import { Column, CreateDateColumn, Entity, OneToOne } from "typeorm";
-import { UserEntity } from "./user.entity";
+import { SupplierEntity } from "./supplier.entity";
 
-@Entity(EntityName.otp)
-export class OtpEntity extends BaseEntityCustom{
+@Entity(EntityName.supplierOtp)
+export class SupplierOtpEntity extends BaseEntityCustom{
     @Column({unique:true,nullable: true})
     mobile:string
     @Column()
@@ -13,10 +12,10 @@ export class OtpEntity extends BaseEntityCustom{
     @Column()
     expires_In:Date
     @Column()
-    userId:number
+    supplierId:number
     @CreateDateColumn()
     create_at:Date
-    @OneToOne(()=>UserEntity,user=>user.otp,{onDelete:"CASCADE"})
-    user:UserEntity
+    @OneToOne(()=>SupplierEntity,supplier=>supplier.supplierOtp,{onDelete:"CASCADE"})
+    supplier:SupplierEntity[]
 
 } 

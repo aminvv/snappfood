@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '../user/user.module';
 import { UserEntity } from '../user/entities/user.entity';
-import { OtpEntity } from '../user/entities/otp.entity';
+import { OtpEntity } from '../user/entities/user-otp.entity';
 import { TokenService } from './token.service';
 import { JwtModule } from '@nestjs/jwt';
 

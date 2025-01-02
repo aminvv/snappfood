@@ -35,6 +35,10 @@ export class CategoryController {
   findBySlug(@Param('slug') slug:string){
     return this.categoryService.findBySlug(slug)
   }
+  @Get('find-By-slug/:id')
+  findById(@Param('id') id:number){
+    return this.categoryService.findById(id)
+  }
 
 
   @Put("/update-category/:id")

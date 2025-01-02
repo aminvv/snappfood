@@ -23,4 +23,5 @@ export class CategoryEntity extends BaseEntityCustom{
     children:CategoryEntity[]    
     @OneToMany(()=>SupplierEntity,supplier=>supplier.category)
     supplier:SupplierEntity[]
+    agent: any;
 }

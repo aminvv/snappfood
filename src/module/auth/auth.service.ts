@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { randomInt } from 'crypto';
-import { OtpEntity } from '../user/entities/otp.entity';
+import { OtpEntity } from '../user/entities/user-otp.entity';
 import { TokenService } from './token.service';
 import { TokensPayload } from './types/payloadToken';
 

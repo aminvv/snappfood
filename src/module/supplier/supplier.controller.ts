@@ -1,15 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SupplierService } from './supplier.service';
-import { CreateSupplierDto } from './dto/create-supplier.dto';
+import { CreateSupplierDto, SupplierSignupDto } from './dto/supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { swaggerConsumes } from 'src/common/enums/swaggerConsumes.enum';
 
 @Controller('supplier')
+@ApiTags('supplier')
 export class SupplierController {
   constructor(private readonly supplierService: SupplierService) {}
 
-  @Post()
-  create(@Body() createSupplierDto: CreateSupplierDto) {
-    return this.supplierService.create(createSupplierDto);
+  @Post('/signup')
+    @ApiConsumes(swaggerConsumes.UrlEncoded)
+  create(@Body() SupplierSignupDto: SupplierSignupDto) {
+    return this.supplierService.signup(SupplierSignupDto);
   }
 
   @Get()

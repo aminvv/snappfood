@@ -2,7 +2,7 @@ import { BaseEntityCustom } from "src/common/abstract/baseEntityCustom.entity";
 import { EntityName } from "src/common/enums/entityName.enum";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, UpdateDateColumn } from "typeorm";
 import { UserAddressEntity } from "./address.entity";
-import { OtpEntity } from "./otp.entity";
+import { OtpEntity } from "./user-otp.entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntityCustom{
@@ -33,4 +33,4 @@ export class UserEntity extends BaseEntityCustom{
     @OneToOne(() => OtpEntity, otp => otp.user)
     @JoinColumn({ name: "otpId" })
     otp: OtpEntity 
-} 
+}   
