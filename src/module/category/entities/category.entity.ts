@@ -1,5 +1,6 @@
 import { BaseEntityCustom } from "src/common/abstract/baseEntityCustom.entity";
 import { EntityName } from "src/common/enums/entityName.enum";
+import { SupplierEntity } from "src/module/supplier/entities/supplier.entity";
 import { Column, Entity, ManyToOne, OneToMany,  } from "typeorm";
 
 @Entity(EntityName.Category)
@@ -20,4 +21,6 @@ export class CategoryEntity extends BaseEntityCustom{
     parent:CategoryEntity
     @OneToMany(()=>CategoryEntity,children=>children.parent,{onDelete:"CASCADE"})
     children:CategoryEntity[]    
+    @OneToMany(()=>SupplierEntity,supplier=>supplier.category)
+    supplier:SupplierEntity[]
 }

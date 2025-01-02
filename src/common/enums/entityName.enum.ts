@@ -3,4 +3,5 @@ User="user",
 Category="category",
 Address="address",
 otp="otp",
-}
+Supplier="supplier",
+}  
