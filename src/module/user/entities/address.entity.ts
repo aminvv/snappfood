@@ -3,7 +3,7 @@ import { EntityName } from "src/common/enums/entityName.enum";
 import { Column, CreateDateColumn, Entity, ManyToOne } from "typeorm";
 import { UserEntity } from "./user.entity";
 
-     @Entity(EntityName.UserAddress)
+     @Entity(EntityName.Address)
      export class UserAddressEntity extends BaseEntityCustom {
         @Column()
         title:string
@@ -13,7 +13,7 @@ import { UserEntity } from "./user.entity";
         city:string
         @Column()
         address:string
-        @Column({nullable:true})
+        @Column({nullable:true}) 
         postal_code:string
         @Column()
         userId:number
@@ -21,4 +21,4 @@ import { UserEntity } from "./user.entity";
         create_at:Date
         @ManyToOne(()=>UserEntity,user=>user.addressList,{onDelete:"CASCADE"})
         user:UserEntity
-     } 
+     }  

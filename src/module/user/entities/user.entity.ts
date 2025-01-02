@@ -1,7 +1,8 @@
 import { BaseEntityCustom } from "src/common/abstract/baseEntityCustom.entity";
 import { EntityName } from "src/common/enums/entityName.enum";
-import { Column, CreateDateColumn, Entity, OneToMany, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, UpdateDateColumn } from "typeorm";
 import { UserAddressEntity } from "./address.entity";
+import { OtpEntity } from "./otp.entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntityCustom{
@@ -9,14 +10,18 @@ export class UserEntity extends BaseEntityCustom{
     firstName:string
     @Column({nullable:true})
     lastName:string
-    @Column({unique:true})
+    @Column({default:false,nullable:true})
+    mobile_verify:boolean
+    @Column({unique:true,nullable: true})
     mobile:string
     @Column({unique:true,nullable:true})
     email:string
-    @Column({unique:true})
+    @Column({unique:true,nullable:true})
     invite_code:string
     @Column({default:0})
     score:number
+    @Column({nullable:true})
+    otpId:number
     @Column({nullable:true})
     agentId:number
     @CreateDateColumn()
@@ -25,4 +30,7 @@ export class UserEntity extends BaseEntityCustom{
     update_at:Date
     @OneToMany(()=>UserAddressEntity,address=>address.user)
     addressList:UserAddressEntity[]
+    @OneToOne(() => OtpEntity, otp => otp.user)
+    @JoinColumn({ name: "otpId" })
+    otp: OtpEntity 
 } 

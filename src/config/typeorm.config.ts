@@ -14,8 +14,9 @@ export function TypeOrmConfig():TypeOrmModuleOptions{
         password:DB_PASSWORD,
         autoLoadEntities:false,
         entities:[join(__dirname,"../module/**/entities/*.entity{.ts,.js}")],
-        synchronize:false
+        synchronize:true
+
 
     }
-} 
-    
+}  
+     
