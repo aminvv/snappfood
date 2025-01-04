@@ -1,5 +1,5 @@
-import { BadGatewayException, BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { CheckSupplierOtpDto, SupplierSignupDto } from './dto/supplier.dto';
+import { BadGatewayException, BadRequestException, ConflictException, Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { CheckSupplierOtpDto, SupplementaryInformationDto,  SupplierSignupDto } from './dto/supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SupplierEntity } from './entities/supplier.entity';
@@ -9,10 +9,14 @@ import { CategoryService } from '../category/category.service';
 import { randomInt } from 'crypto';
 import { SupplierOtpEntity } from './entities/suplier-otp.entity';
 import { TokenService } from '../auth/token.service';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
+import { SupplierStatus } from './enums/status.enum';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class SupplierService {
   constructor(
+    @Inject(REQUEST) private request: Request,
     @InjectRepository(SupplierEntity) private supplierRepository: Repository<SupplierEntity>,
     @InjectRepository(SupplierOtpEntity) private supplierOtpRepository: Repository<SupplierOtpEntity>,
     private categoryService: CategoryService,
@@ -95,6 +99,27 @@ export class SupplierService {
      message: "login successfully",
      supplierAccessToken,
      supplierRefreshToken,
+    }
+  }
+
+  async saveSupplementaryInformation(infoDto:SupplementaryInformationDto){
+    const{id}=this.request.supplier
+    const{email,national_code}=infoDto
+    let supplier=await this.supplierRepository.findOneBy({national_code})
+    if(national_code && supplier.id !== id ){
+      throw new ConflictException("national code already used")
+    }
+    supplier=await this.supplierRepository.findOneBy({email})
+    if(email && supplier.id !== id ){
+      throw new ConflictException("email already used")
+    }
+    await this.supplierRepository.update({id},{
+      national_code,
+      email,
+      status:SupplierStatus.SupplementaryInformation
+    })
+    return{
+      message:"updated information successfully"
     }
   }
 }

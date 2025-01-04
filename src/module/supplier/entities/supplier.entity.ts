@@ -3,6 +3,7 @@ import { EntityName } from "src/common/enums/entityName.enum";
 import { CategoryEntity } from "src/module/category/entities/category.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { SupplierOtpEntity } from "./suplier-otp.entity";
+import { SupplierStatus } from "../enums/status.enum";
 
 @Entity(EntityName.Supplier)
 export class SupplierEntity extends BaseEntityCustom {
@@ -16,6 +17,12 @@ export class SupplierEntity extends BaseEntityCustom {
     categoryId: number
     @Column()
     city: string
+    @Column({nullable:true})
+    email: string
+    @Column({nullable:true,default:SupplierStatus.Register})
+    status: string
+    @Column({nullable:true})
+    national_code: string
     @Column()
     phone: string
     @Column({default:false})

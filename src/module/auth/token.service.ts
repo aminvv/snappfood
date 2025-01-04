@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CheckOtpDto, OtpDto } from './dto/auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/entities/user.entity';
@@ -44,5 +44,15 @@ export class TokenService {
         })
         return refreshToken
 
+    }
+
+    async validationSupplierAccessToken(token:string){
+        try {
+            return this.jwtService.verify(token,{
+                secret:process.env.ACCESS_TOKEN_FOR_SUPPLIER
+            })
+        } catch (error) {
+            throw new UnauthorizedException("login again")
+        }
     }
 }

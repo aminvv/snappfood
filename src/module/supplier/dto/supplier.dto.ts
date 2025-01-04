@@ -26,3 +26,10 @@ export class SupplierSignupDto {
 
 }
 
+export class SupplementaryInformationDto{
+@ApiProperty()
+email:string
+@ApiProperty()
+national_code:string
+}
+
