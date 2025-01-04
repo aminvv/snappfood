@@ -1,17 +1,22 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { CreateSupplierDto, SupplierSignupDto } from './dto/supplier.dto';
+import { BadGatewayException, BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { CheckSupplierOtpDto, SupplierSignupDto } from './dto/supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SupplierEntity } from './entities/supplier.entity';
 import { Repository } from 'typeorm';
 import { CategoryEntity } from '../category/entities/category.entity';
 import { CategoryService } from '../category/category.service';
+import { randomInt } from 'crypto';
+import { SupplierOtpEntity } from './entities/suplier-otp.entity';
+import { TokenService } from '../auth/token.service';
 
 @Injectable()
 export class SupplierService {
   constructor(
     @InjectRepository(SupplierEntity) private supplierRepository: Repository<SupplierEntity>,
+    @InjectRepository(SupplierOtpEntity) private supplierOtpRepository: Repository<SupplierOtpEntity>,
     private categoryService: CategoryService,
+    private tokenService: TokenService,
   ) { }
   async signup(supplierSignupDto: SupplierSignupDto) {
     const { categoryId, city, invite_code, manager_family, manager_name, phone, store_name } = supplierSignupDto
@@ -30,21 +35,66 @@ export class SupplierService {
       phone,
       store_name,
       categoryId: category.id,
-      agentId: agent?.id ?? null, 
+      agentId: agent?.id ?? null,
       invite_code: mobileNumber.toString(32).toUpperCase(),
     });
     await this.supplierRepository.save(account)
+    const code = await this.createOtpForSupplier(account)
+    return {
+      code
+    }
+
   }
 
-  findAll() {
+
+  async createOtpForSupplier(supplier: SupplierEntity) {
+    const expiresIn = new Date(new Date().getTime() + 1000 * 60 * 5)
+    const code = randomInt(10000, 99999).toString()
+    let supplierOtp = await this.supplierOtpRepository.findOneBy({ supplierId: supplier.id })
+    if (!supplierOtp) {
+      supplierOtp = this.supplierOtpRepository.create({
+        code,
+        expires_In: expiresIn,
+        supplierId: supplier.id
+      });
+    } else {
+      if (supplierOtp.expires_In < new Date()) {
+        throw new BadGatewayException("supplierOtpCode expired");
+      }
+      supplierOtp.code = code;
+      supplierOtp.expires_In = expiresIn;
+    }
+    await this.supplierOtpRepository.save(supplierOtp);
+    supplier.supplier_otpId = supplierOtp.id;
+    await this.supplierRepository.save(supplier);
+    return {
+      code
+    }
+
+
   }
 
-  findOne(id: number) {
-  }
-
-  update(id: number, updateSupplierDto: UpdateSupplierDto) {
-  }
-
-  remove(id: number) {
+  async checkSupplierOtp(checkSupplierOtpDto: CheckSupplierOtpDto) {
+    const { code, phone } = checkSupplierOtpDto
+    const supplier = await this.supplierRepository.findOne({
+      where: { phone },
+      relations: {
+        supplierOtp: true
+      }
+    })
+    if (!supplier) throw new NotFoundException("Not  found User")
+    const supplierOtp = supplier.supplierOtp  
+    if (supplierOtp.code !== code) throw new BadRequestException("code not matching")
+    if (supplierOtp.expires_In < new Date()) throw new BadRequestException("supplier Otp code expires")
+    if (!supplier.supplier_Phone_verify) {
+      await this.supplierRepository.update({ id: supplier.id }, { supplier_Phone_verify: true })
+    }
+    const supplierAccessToken=await this.tokenService.createAccessTokenForSupplier({userId:supplier.id,mobile:supplier.phone})
+    const supplierRefreshToken=await this .tokenService.refreshTokenForSupplier({userId:supplier.id,mobile:supplier.phone})
+    return{
+     message: "login successfully",
+     supplierAccessToken,
+     supplierRefreshToken,
+    }
   }
 }

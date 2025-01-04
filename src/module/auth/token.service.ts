@@ -13,17 +13,33 @@ export class TokenService {
         private jwtService: JwtService,
     ) { }
 
-    async createAccessToken(payload: TokensPayload) {
+    async createAccessTokenForUser(payload: TokensPayload) {
         const tokenAccess = this.jwtService.sign(payload, {
-            secret: process.env.ACCESS_TOKEN,
+            secret: process.env.ACCESS_TOKEN_FOR_USER,
             expiresIn: "30d",
         })
         
         return tokenAccess
     }
-    async refreshToken(payload: TokensPayload) {
+    async refreshTokenForUser(payload: TokensPayload) {
         const refreshToken=this.jwtService.sign(payload,{
-            secret:process.env.REFRESH_TOKEN,
+            secret:process.env.REFRESH_TOKEN_FOR_USER,
+            expiresIn:"1y"
+        })
+        return refreshToken
+
+    }
+    async createAccessTokenForSupplier(payload: TokensPayload) {
+        const tokenAccess = this.jwtService.sign(payload, {
+            secret: process.env.ACCESS_TOKEN_FOR_SUPPLIER,
+            expiresIn: "30d",
+        })
+        
+        return tokenAccess
+    }
+    async refreshTokenForSupplier(payload: TokensPayload) {
+        const refreshToken=this.jwtService.sign(payload,{
+            secret:process.env.REFRESH_TOKEN_FOR_SUPPLIER,
             expiresIn:"1y"
         })
         return refreshToken

@@ -4,12 +4,14 @@ import { SupplierController } from './supplier.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SupplierEntity } from './entities/supplier.entity';
 import { SupplierOtpEntity } from './entities/suplier-otp.entity';
-import { CategoryService } from '../category/category.service';
 import { CategoryModule } from '../category/category.module';
+import { TokenService } from '../auth/token.service';
+import { AuthModule } from '../auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([SupplierEntity,SupplierOtpEntity]),CategoryModule],
+  imports:[TypeOrmModule.forFeature([SupplierEntity,SupplierOtpEntity]),CategoryModule,AuthModule,JwtModule],
   controllers: [SupplierController],
-  providers: [SupplierService],
+  providers: [SupplierService,TokenService],
 })
 export class SupplierModule {}

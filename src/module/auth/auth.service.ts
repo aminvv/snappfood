@@ -44,8 +44,8 @@ export class AuthService {
             await this.userRepository.update({id:user.id},{mobile_verify:true})
         }
         const payload: TokensPayload = { userId: user.otp.userId, mobile: user.otp.mobile, };
-        const accessToken =await this.tokenService.createAccessToken(payload)
-        const refreshToken =await this.tokenService.refreshToken(payload)
+        const accessToken =await this.tokenService.createAccessTokenForUser(payload)
+        const refreshToken =await this.tokenService.refreshTokenForUser(payload)
         return {
             accessToken: accessToken.toString(),  refreshToken: refreshToken.toString(), message: 'You logged-in successfully',
         };

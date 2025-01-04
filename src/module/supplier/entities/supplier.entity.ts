@@ -18,6 +18,8 @@ export class SupplierEntity extends BaseEntityCustom {
     city: string
     @Column()
     phone: string
+    @Column({default:false})
+    supplier_Phone_verify: boolean
     @Column({nullable:true})
     supplier_otpId:number
     @Column()

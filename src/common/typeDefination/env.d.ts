@@ -18,8 +18,10 @@ namespace NodeJS {
 
         // TOKEN SECRET
 
-        ACCESS_TOKEN: string
-        REFRESH_TOKEN: string
+        ACCESS_TOKEN_FOR_USER: string
+        REFRESH_TOKEN_FOR_USER: string
+        ACCESS_TOKEN_FOR_SUPPLIER: string
+        REFRESH_TOKEN_FOR_SUPPLIER: string
 
 
     }
