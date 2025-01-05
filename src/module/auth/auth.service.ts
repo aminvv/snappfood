@@ -43,7 +43,7 @@ export class AuthService {
         if(!user.mobile_verify){
             await this.userRepository.update({id:user.id},{mobile_verify:true})
         }
-        const payload: TokensPayload = { userId: user.otp.userId, mobile: user.otp.mobile, };
+        const payload: TokensPayload = { id: user.otp.userId, mobile: user.otp.mobile, };
         const accessToken =await this.tokenService.createAccessTokenForUser(payload)
         const refreshToken =await this.tokenService.refreshTokenForUser(payload)
         return {

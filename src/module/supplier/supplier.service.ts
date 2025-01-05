@@ -9,7 +9,7 @@ import { CategoryService } from '../category/category.service';
 import { randomInt } from 'crypto';
 import { SupplierOtpEntity } from './entities/suplier-otp.entity';
 import { TokenService } from '../auth/token.service';
-import { REQUEST } from '@nestjs/core';
+import { REQUEST } from "@nestjs/core";
 import { Request } from 'express';
 import { SupplierStatus } from './enums/status.enum';
 
@@ -88,13 +88,13 @@ export class SupplierService {
     })
     if (!supplier) throw new NotFoundException("Not  found User")
     const supplierOtp = supplier.supplierOtp  
-    if (supplierOtp.code !== code) throw new BadRequestException("code not matching")
+    if (supplierOtp.code !== code) throw new BadRequestException("code not matching") 
     if (supplierOtp.expires_In < new Date()) throw new BadRequestException("supplier Otp code expires")
     if (!supplier.supplier_Phone_verify) {
       await this.supplierRepository.update({ id: supplier.id }, { supplier_Phone_verify: true })
     }
-    const supplierAccessToken=await this.tokenService.createAccessTokenForSupplier({userId:supplier.id,mobile:supplier.phone})
-    const supplierRefreshToken=await this .tokenService.refreshTokenForSupplier({userId:supplier.id,mobile:supplier.phone})
+    const supplierAccessToken=await this.tokenService.createAccessTokenForSupplier({id:supplier.id,mobile:supplier.phone})
+    const supplierRefreshToken=await this .tokenService.refreshTokenForSupplier({id:supplier.id,mobile:supplier.phone})
     return{
      message: "login successfully",
      supplierAccessToken,
@@ -103,14 +103,14 @@ export class SupplierService {
   }
 
   async saveSupplementaryInformation(infoDto:SupplementaryInformationDto){
-    const{id}=this.request.supplier
+    const{id}=this.request?.supplier
     const{email,national_code}=infoDto
     let supplier=await this.supplierRepository.findOneBy({national_code})
-    if(national_code && supplier.id !== id ){
+    if(supplier && supplier.id !== id ){
       throw new ConflictException("national code already used")
     }
     supplier=await this.supplierRepository.findOneBy({email})
-    if(email && supplier.id !== id ){
+    if(supplier && supplier.id !== id ){
       throw new ConflictException("email already used")
     }
     await this.supplierRepository.update({id},{

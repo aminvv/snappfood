@@ -34,7 +34,6 @@ export class TokenService {
             secret: process.env.ACCESS_TOKEN_FOR_SUPPLIER,
             expiresIn: "30d",
         })
-        
         return tokenAccess
     }
     async refreshTokenForSupplier(payload: TokensPayload) {
@@ -46,13 +45,19 @@ export class TokenService {
 
     }
 
-    async validationSupplierAccessToken(token:string){
+    async validationSupplierAccessToken(token: string) {
         try {
-            return this.jwtService.verify(token,{
-                secret:process.env.ACCESS_TOKEN_FOR_SUPPLIER
-            })
+            const payload = this.jwtService.verify(token, {
+                secret: process.env.ACCESS_TOKEN_FOR_SUPPLIER,
+            });
+   
+
+    
+            return payload;
         } catch (error) {
-            throw new UnauthorizedException("login again")
+            throw new UnauthorizedException("Login again");
         }
     }
+    
+    
 }
