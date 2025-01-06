@@ -3,6 +3,7 @@ import { EntityName } from "src/common/enums/entityName.enum";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, UpdateDateColumn } from "typeorm";
 import { UserAddressEntity } from "./address.entity";
 import { OtpEntity } from "./user-otp.entity";
+import { FeedbackEntity } from "src/module/menu/entities/feedback.entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntityCustom{
@@ -30,6 +31,8 @@ export class UserEntity extends BaseEntityCustom{
     update_at:Date
     @OneToMany(()=>UserAddressEntity,address=>address.user)
     addressList:UserAddressEntity[]
+    @OneToMany(()=>FeedbackEntity,feedback=>feedback.user)
+    feedback:FeedbackEntity[]
     @OneToOne(() => OtpEntity, otp => otp.user)
     @JoinColumn({ name: "otpId" })
     otp: OtpEntity 

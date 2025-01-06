@@ -4,6 +4,8 @@ import { CategoryEntity } from "src/module/category/entities/category.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { SupplierOtpEntity } from "./suplier-otp.entity";
 import { SupplierStatus } from "../enums/status.enum";
+import { TypeEntity } from "src/module/menu/entities/type.entity";
+import { MenuEntity } from "src/module/menu/entities/menu.entity";
 
 @Entity(EntityName.Supplier)
 export class SupplierEntity extends BaseEntityCustom {
@@ -17,22 +19,22 @@ export class SupplierEntity extends BaseEntityCustom {
     categoryId: number
     @Column()
     city: string
-    @Column({nullable:true})
+    @Column({ nullable: true })
     acceptedDoc: string
-    @Column({nullable:true})
+    @Column({ nullable: true })
     image: string
-    @Column({nullable:true})
+    @Column({ nullable: true })
     email: string
-    @Column({nullable:true,default:SupplierStatus.Register})
+    @Column({ nullable: true, default: SupplierStatus.Register })
     status: string
-    @Column({nullable:true})
+    @Column({ nullable: true })
     national_code: string
     @Column()
     phone: string
-    @Column({default:false})
+    @Column({ default: false })
     supplier_Phone_verify: boolean
-    @Column({nullable:true})
-    supplier_otpId:number
+    @Column({ nullable: true })
+    supplier_otpId: number
     @Column()
     invite_code: string
     @Column({ nullable: true })
@@ -43,6 +45,10 @@ export class SupplierEntity extends BaseEntityCustom {
     agent: SupplierEntity
     @OneToMany(() => CategoryEntity, category => category.agent)
     subsets: SupplierEntity[]
+    @OneToMany(() => TypeEntity, type => type.supplier)
+    menuType: TypeEntity[]
+    @OneToMany(() => MenuEntity, menu => menu.supplier)
+    menu: TypeEntity[]
     @OneToOne(() => SupplierOtpEntity, SupplierOtp => SupplierOtp.supplier)
     @JoinColumn({ name: "supplier_otpId" })
     supplierOtp: SupplierOtpEntity

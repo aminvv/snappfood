@@ -7,6 +7,7 @@ import { CategoryModule } from '../category/category.module';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
 import { SupplierModule } from '../supplier/supplier.module';
+import { MenuModule } from '../menu/menu.module';
 
 
 @Module({
@@ -16,6 +17,7 @@ import { SupplierModule } from '../supplier/supplier.module';
     UserModule,
     SupplierModule,
     CategoryModule,
+    MenuModule,
 
   ],
   controllers: [],
