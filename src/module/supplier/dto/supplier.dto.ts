@@ -32,4 +32,10 @@ email:string
 @ApiProperty()
 national_code:string
 }
+export class UploadDocDto{
+@ApiProperty({format:"binary"})
+acceptedDoc:string
+@ApiProperty({format:"binary"})
+image:string
+}
 

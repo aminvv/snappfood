@@ -18,6 +18,10 @@ export class SupplierEntity extends BaseEntityCustom {
     @Column()
     city: string
     @Column({nullable:true})
+    acceptedDoc: string
+    @Column({nullable:true})
+    image: string
+    @Column({nullable:true})
     email: string
     @Column({nullable:true,default:SupplierStatus.Register})
     status: string

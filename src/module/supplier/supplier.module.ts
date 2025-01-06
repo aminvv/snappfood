@@ -7,11 +7,12 @@ import { SupplierOtpEntity } from './entities/suplier-otp.entity';
 import { CategoryModule } from '../category/category.module';
 import { TokenService } from '../auth/token.service';
 import { AuthModule } from '../auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { S3Service } from '../s3/s3.service';
 
 @Module({
   imports:[TypeOrmModule.forFeature([SupplierEntity,SupplierOtpEntity]),CategoryModule,AuthModule,JwtModule],
   controllers: [SupplierController],
-  providers: [SupplierService,TokenService],
+  providers: [SupplierService,TokenService,JwtService,S3Service],
 })
 export class SupplierModule {}

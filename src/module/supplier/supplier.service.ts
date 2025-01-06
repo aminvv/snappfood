@@ -12,6 +12,9 @@ import { TokenService } from '../auth/token.service';
 import { REQUEST } from "@nestjs/core";
 import { Request } from 'express';
 import { SupplierStatus } from './enums/status.enum';
+import multer, { Multer } from 'multer';
+import { TypeUploadDoc } from './types/uploadedDoc.type';
+import { S3Service } from '../s3/s3.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class SupplierService {
@@ -21,6 +24,7 @@ export class SupplierService {
     @InjectRepository(SupplierOtpEntity) private supplierOtpRepository: Repository<SupplierOtpEntity>,
     private categoryService: CategoryService,
     private tokenService: TokenService,
+    private s3Service: S3Service,
   ) { }
   async signup(supplierSignupDto: SupplierSignupDto) {
     const { categoryId, city, invite_code, manager_family, manager_name, phone, store_name } = supplierSignupDto
@@ -120,6 +124,21 @@ export class SupplierService {
     })
     return{
       message:"updated information successfully"
+    }
+  }
+
+  async uploadedDocument(files:TypeUploadDoc){
+    const{id}=this.request?.supplier
+    const {acceptedDoc,image}=files
+    const supplier=await this.supplierRepository.findOneBy({id})
+    const imageResult=await this.s3Service.uploadFile(image[0],"imageDoc")
+    const acceptedDocResult=await this.s3Service.uploadFile(acceptedDoc[0],"acceptedDoc")
+    if(imageResult)supplier.image=imageResult.Location
+    if(acceptedDocResult)supplier.acceptedDoc=acceptedDocResult.Location
+    supplier.status=SupplierStatus.UploadedDocument
+    await this.supplierRepository.save(supplier)
+    return{
+      message:"upload SuccessFully"
     }
   }
 }
