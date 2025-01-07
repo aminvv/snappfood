@@ -1,7 +1,7 @@
 import { BaseEntityCustom } from "src/common/abstract/baseEntityCustom.entity";
 import { EntityName } from "src/common/enums/entityName.enum";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
-import { TypeEntity } from "./type.entity";
+import { MenuTypeEntity, } from "./menu-type.entity";
 import { SupplierEntity } from "src/module/supplier/entities/supplier.entity";
 import { FeedbackEntity } from "./feedback.entity";
 
@@ -23,8 +23,8 @@ export class MenuEntity extends BaseEntityCustom {
     typeId:number
     @Column()
     supplierId:number
-    @ManyToOne(()=>TypeEntity,type=>type.menuItem)
-    type:TypeEntity
+    @ManyToOne(()=>MenuTypeEntity,type=>type.menuItem)
+    type:MenuTypeEntity
     @ManyToOne(()=>SupplierEntity,type=>type.menu)
     supplier:SupplierEntity
     @OneToMany(()=>FeedbackEntity,feedback=>feedback.food)

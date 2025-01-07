@@ -14,5 +14,6 @@ import { S3Service } from '../s3/s3.service';
   imports:[TypeOrmModule.forFeature([SupplierEntity,SupplierOtpEntity]),CategoryModule,AuthModule,JwtModule],
   controllers: [SupplierController],
   providers: [SupplierService,TokenService,JwtService,S3Service],
+  exports: [SupplierService,TokenService,JwtService,S3Service],
 })
 export class SupplierModule {}

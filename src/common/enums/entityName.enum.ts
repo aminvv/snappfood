@@ -7,5 +7,5 @@ supplierOtp="supplier_otp",
 Supplier="supplier",
 Menu="menu",
 Feedback="feedback",
-Type="type",
-}  
+MenuType="menu_type",
+}      

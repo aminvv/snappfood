@@ -4,7 +4,7 @@ import { CategoryEntity } from "src/module/category/entities/category.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { SupplierOtpEntity } from "./suplier-otp.entity";
 import { SupplierStatus } from "../enums/status.enum";
-import { TypeEntity } from "src/module/menu/entities/type.entity";
+import { MenuTypeEntity,  } from "src/module/menu/entities/menu-type.entity";
 import { MenuEntity } from "src/module/menu/entities/menu.entity";
 
 @Entity(EntityName.Supplier)
@@ -45,10 +45,10 @@ export class SupplierEntity extends BaseEntityCustom {
     agent: SupplierEntity
     @OneToMany(() => CategoryEntity, category => category.agent)
     subsets: SupplierEntity[]
-    @OneToMany(() => TypeEntity, type => type.supplier)
-    menuType: TypeEntity[]
+    @OneToMany(() => MenuTypeEntity, type => type.supplier)
+    menuType: MenuTypeEntity[]
     @OneToMany(() => MenuEntity, menu => menu.supplier)
-    menu: TypeEntity[]
+    menu: MenuTypeEntity[]
     @OneToOne(() => SupplierOtpEntity, SupplierOtp => SupplierOtp.supplier)
     @JoinColumn({ name: "supplier_otpId" })
     supplierOtp: SupplierOtpEntity

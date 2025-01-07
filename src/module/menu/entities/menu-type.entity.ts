@@ -4,8 +4,8 @@ import { SupplierEntity } from "src/module/supplier/entities/supplier.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { MenuEntity } from "./menu.entity";
 
-@Entity(EntityName.Type)
-export class TypeEntity extends  BaseEntityCustom{
+@Entity(EntityName.MenuType)
+export class MenuTypeEntity extends  BaseEntityCustom{
 @Column()
 title:string
 @Column()
