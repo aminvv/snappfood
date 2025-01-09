@@ -99,7 +99,7 @@ export class CategoryService {
                 updateObject["imageKey"] = Key
                 if(category?.imageKey){
                 await this.S3Service.deleteFile(category?.imageKey)
-
+ 
                 }
             }
         }

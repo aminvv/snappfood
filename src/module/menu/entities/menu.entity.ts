@@ -7,27 +7,31 @@ import { FeedbackEntity } from "./feedback.entity";
 
 @Entity(EntityName.Menu)
 export class MenuEntity extends BaseEntityCustom {
+
     @Column()
-    name:string
+    name: string
+    @Column({nullable:true})
+    image: string
+    @Column({nullable:true})
+    key: string
+    @Column({ type: "double" ,nullable:true})
+    price: number
+    @Column({ type: "double", default: 0 })
+    discount: number
     @Column()
-    image:string
-    @Column({type:"double"})
-    price:number
-    @Column({type:"double",default:0})
-    discount:number
+    description: string
+    @Column({ type: "double", nullable:true})
+    score: number
     @Column()
-    description:string
-    @Column({type:"double"})
-    score:number
+    typeId: number
     @Column()
-    typeId:number
-    @Column()
-    supplierId:number
-    @ManyToOne(()=>MenuTypeEntity,type=>type.menuItem)
-    type:MenuTypeEntity
-    @ManyToOne(()=>SupplierEntity,type=>type.menu)
-    supplier:SupplierEntity
-    @OneToMany(()=>FeedbackEntity,feedback=>feedback.food)
-    feedback:SupplierEntity[]
-    
+    supplierId: number
+    @ManyToOne(() => MenuTypeEntity, type => type.menuItem)
+    type: MenuTypeEntity
+    @ManyToOne(() => SupplierEntity, type => type.menu)
+    supplier: SupplierEntity
+    @OneToMany(() => FeedbackEntity, feedback => feedback.food)
+    feedback: SupplierEntity[]
+
 }
+  

@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
-import { CreateMenuDto } from '../dto/create-menu.dto';
+import { CreateMenuItemDto } from '../dto/create-menu-item.dto';
 import { UpdateMenuDto } from '../dto/update-menu.dto';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';

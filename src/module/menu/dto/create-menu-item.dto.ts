@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CreateMenuDto {
+export class CreateMenuItemDto {
     @ApiProperty()
-    name:string
-    @ApiProperty()
-    image:string
+    name:string 
+    @ApiProperty({format:"binary"})
+    image:string 
     @ApiProperty({type:"number"})
     price:number
     @ApiProperty({type:"number",default:0})
@@ -12,5 +12,6 @@ export class CreateMenuDto {
     @ApiProperty()
     description:string
     @ApiProperty({type:"number"})
-    score:number
+    typeId:number
 }
+ 
