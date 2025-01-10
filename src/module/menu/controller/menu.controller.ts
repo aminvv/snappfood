@@ -6,6 +6,7 @@ import { uploadedOptionalFiles } from 'src/common/decorator/upload-file.decorato
 import { ApiConsumes } from '@nestjs/swagger';
 import { swaggerConsumes } from 'src/common/enums/swaggerConsumes.enum';
 import { SupplierAuth } from 'src/common/decorator/auth.decorator';
+import { Skip_Auth } from 'src/common/decorator/skip-Auth.decorator';
 
 @Controller('menu')
 @SupplierAuth()
@@ -17,6 +18,14 @@ export class MenuController {
   @UseInterceptors(uploadFileS3("image"))
   MenuTypeService(@Body() createMenuItemDto: CreateMenuItemDto,@uploadedOptionalFiles()image:Express.Multer.File) {
     return this.menuService.createMenuitem(createMenuItemDto,image)
+
+  }
+    
+  @Get('/findAll-slug/:slug')
+  @Skip_Auth()
+  @ApiConsumes(swaggerConsumes.UrlEncoded)
+  findAll(@Param("slug") slug:string) {
+    return this.menuService.findAll(slug)
   }
  
 }

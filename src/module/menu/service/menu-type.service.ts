@@ -17,10 +17,10 @@ export class MenuTypeService {
   ) { }
 
   async create(menuTypeDto:menuTypeDto) {
-    const { id } = this.request.supplier
+    const { id } = this.request.supplier    
     const{title}=menuTypeDto
     const supplier = await this.MenuTypeRepository.findOneBy({ supplierId: id })    
-    if (supplier) throw new NotFoundException("supplier not found")
+    if (!supplier) throw new NotFoundException("supplier not found")
     const type = this.MenuTypeRepository.create({
       title: title,
       supplierId:id

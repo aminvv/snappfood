@@ -5,6 +5,7 @@ import { MenuTypeService } from "../service/menu-type.service";
 import { menuTypeDto } from "../dto/menu-type.dto";
 import { SupplierAuth } from "src/common/decorator/auth.decorator";
 import { swaggerConsumes } from "src/common/enums/swaggerConsumes.enum";
+import { Skip_Auth } from "src/common/decorator/skip-Auth.decorator";
 @Controller('menu-type')
 @ApiTags('menu-type')
 @SupplierAuth()
@@ -29,7 +30,7 @@ export class MenuTypeController {
         return this.menuTypeService.findOneById(id)
     }
     @Delete("/remove-type/:id")
-    @ApiConsumes(swaggerConsumes.UrlEncoded)
+    @ApiConsumes(swaggerConsumes.UrlEncoded) 
     remove(@Param("id") id: number) {
         return this.menuTypeService.remove(id)
     }

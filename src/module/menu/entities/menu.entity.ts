@@ -10,17 +10,19 @@ export class MenuEntity extends BaseEntityCustom {
 
     @Column()
     name: string
-    @Column({nullable:true})
+    @Column({ nullable: true })
     image: string
-    @Column({nullable:true})
+    @Column({ type: 'int' })
     key: string
-    @Column({ type: "double" ,nullable:true})
+    @Column({ nullable: true, unique: true })
+    slug: string
+    @Column({ type: "double", nullable: true })
     price: number
     @Column({ type: "double", default: 0 })
     discount: number
     @Column()
     description: string
-    @Column({ type: "double", nullable:true})
+    @Column({ type: "double", nullable: true })
     score: number
     @Column()
     typeId: number
@@ -34,4 +36,3 @@ export class MenuEntity extends BaseEntityCustom {
     feedback: SupplierEntity[]
 
 }
-  
