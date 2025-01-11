@@ -12,7 +12,7 @@ export class MenuEntity extends BaseEntityCustom {
     name: string
     @Column({ nullable: true })
     image: string
-    @Column({ type: 'int' })
+    @Column()
     key: string
     @Column({ nullable: true, unique: true })
     slug: string
@@ -33,6 +33,6 @@ export class MenuEntity extends BaseEntityCustom {
     @ManyToOne(() => SupplierEntity, type => type.menu)
     supplier: SupplierEntity
     @OneToMany(() => FeedbackEntity, feedback => feedback.food)
-    feedback: SupplierEntity[]
+    feedback: FeedbackEntity[]
 
 }

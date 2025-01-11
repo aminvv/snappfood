@@ -6,12 +6,14 @@ import { MenuEntity } from "./menu.entity";
 
 @Entity(EntityName.MenuType)
 export class MenuTypeEntity extends  BaseEntityCustom{
-@Column()
-title:string
-@Column()
+    @Column()
+    title:string
+    @Column({type:"int",nullable:true})
+    Priority:number
+    @Column()
 supplierId:number
 @ManyToOne(()=>SupplierEntity,supplier=>supplier.menuType,{onDelete:"CASCADE"})
 supplier:SupplierEntity
-@OneToMany(()=>MenuEntity,menuFood=>menuFood.type)
+@OneToMany(()=>MenuEntity,menuFood=>menuFood. type)
 menuItem:MenuEntity[]
 }
