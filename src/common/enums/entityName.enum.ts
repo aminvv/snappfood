@@ -8,4 +8,6 @@ Supplier="supplier",
 Menu="menu",
 Feedback="feedback",
 MenuType="menu_type",
+Discount="discount",
+UserBasket="user_basket",
 }      

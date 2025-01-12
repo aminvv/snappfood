@@ -4,6 +4,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, Upda
 import { UserAddressEntity } from "./address.entity";
 import { OtpEntity } from "./user-otp.entity";
 import { FeedbackEntity } from "src/module/menu/entities/feedback.entity";
+import { UserBasketEntity } from "src/module/basket/entities/user-basket.entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntityCustom{
@@ -33,6 +34,8 @@ export class UserEntity extends BaseEntityCustom{
     addressList:UserAddressEntity[]
     @OneToMany(()=>FeedbackEntity,feedback=>feedback.user)
     feedback:FeedbackEntity[]
+    @OneToMany(()=>UserBasketEntity,basket=>basket.user)
+    basket:UserBasketEntity[]
     @OneToOne(() => OtpEntity, otp => otp.user)
     @JoinColumn({ name: "otpId" })
     otp: OtpEntity 
