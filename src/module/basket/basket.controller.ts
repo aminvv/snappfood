@@ -32,8 +32,9 @@ export class BasketController {
     return this.basketService.update(+id, updateBasketDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.basketService.remove(+id);
+  @Delete('/delete-item-from-basket') 
+   @ApiConsumes(swaggerConsumes.UrlEncoded)
+  removeFromBasket(@Body() basketDto: BasketDto) {
+    return this.basketService.removeFromBasket(basketDto);
   }
 }
