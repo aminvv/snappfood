@@ -1,15 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { BasketService } from './basket.service';
-import { CreateBasketDto } from './dto/create-basket.dto';
+import { BasketDto } from './dto/create-basket.dto';
 import { UpdateBasketDto } from './dto/update-basket.dto';
+import { UserAuth } from 'src/common/decorator/auth.decorator';
+import { ApiConsumes } from '@nestjs/swagger';
+import { swaggerConsumes } from 'src/common/enums/swaggerConsumes.enum';
 
 @Controller('basket')
+@UserAuth()
 export class BasketController {
   constructor(private readonly basketService: BasketService) {}
 
-  @Post()
-  create(@Body() createBasketDto: CreateBasketDto) {
-    return this.basketService.create(createBasketDto);
+  @Post('/addToBasket')
+  @ApiConsumes(swaggerConsumes.UrlEncoded)
+  addToBasket(@Body() BasketDto: BasketDto) {
+    return this.basketService.addToBasket(BasketDto);
   }
 
   @Get()

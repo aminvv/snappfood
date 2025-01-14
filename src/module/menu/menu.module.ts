@@ -14,5 +14,6 @@ import { SupplierModule } from '../supplier/supplier.module';
     imports:[TypeOrmModule.forFeature([MenuEntity,FeedbackEntity,MenuTypeEntity]),SupplierModule],
   controllers: [MenuController,MenuTypeController],
   providers: [MenuService,MenuTypeService,FeedbackService],
+  exports: [MenuService,MenuTypeService,FeedbackService,TypeOrmModule],
 })
 export class MenuModule {}

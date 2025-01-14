@@ -58,6 +58,19 @@ export class TokenService {
             throw new UnauthorizedException("Login again");
         }
     }
+    async validationUserAccessToken(token: string) {
+        try {
+            const payload = this.jwtService.verify(token, {
+                secret: process.env.ACCESS_TOKEN_FOR_USER,
+            });
+   
+
+    
+            return payload;
+        } catch (error) {
+            throw new UnauthorizedException("Login again");
+        }
+    }
     
     
 }

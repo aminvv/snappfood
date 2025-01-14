@@ -1,11 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBasketDto } from './dto/create-basket.dto';
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { BasketDto } from './dto/create-basket.dto';
 import { UpdateBasketDto } from './dto/update-basket.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserBasketEntity } from './entities/user-basket.entity';
+import { Repository } from 'typeorm';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
+import { MenuEntity } from '../menu/entities/menu.entity';
+import { MenuService } from '../menu/service/menu.service';
 
-@Injectable()
+@Injectable({scope:Scope.REQUEST})
 export class BasketService {
-  create(createBasketDto: CreateBasketDto) {
-    return 'This action adds a new basket';
+  constructor(
+    @Inject(REQUEST) private request:Request,
+    @InjectRepository(UserBasketEntity)private userBasketRepository:Repository<UserBasketEntity>,
+    @InjectRepository(MenuEntity)private menuRepository:Repository<MenuEntity>,
+  ){}
+  async addToBasket(BasketDto: BasketDto) {
+    const{id:userId}=this.request.user
+    const{foodId}=BasketDto
+    const food=await this.menuRepository.findOneBy({id:foodId})
+    let basketItem=await this.userBasketRepository.findOne({
+      where:{foodId,userId}
+    })
+    if(basketItem) basketItem.count+=1
+    else{
+      basketItem=this.userBasketRepository.create({
+        foodId,
+        userId,
+        count:1
+      })
+    }
+    await this.userBasketRepository.save(basketItem)
+    return{
+      message:"added food to your basket"
+    }
   }
 
   findAll() {
