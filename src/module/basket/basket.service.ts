@@ -48,7 +48,15 @@ export class BasketService {
     const { id: userId } = this.request.user
     const { code } = discountBasketDto
     const discount = await this.discountService.findOneByCode(code)
-
+    if (!discount.active) {
+      throw new BadRequestException("this discount code is not active")
+    }
+    if (discount.limit && discount.limit <= discount.usage) {
+      throw new BadRequestException("the capacity of this discount code is full")
+    }
+    if (discount?.expiresIn && discount?.expiresIn.getTime()<=new Date().getTime()){
+      throw new BadRequestException("this discount code is expired")
+    }
       const userBasketDiscount = await this.userBasketRepository.findBy({ discountId: discount.id, userId })
     if (userBasketDiscount) throw new BadRequestException("already used discount ")
     if (discount.supplierId) {
@@ -79,6 +87,22 @@ export class BasketService {
       })
       if (!userBasket) {
         throw new BadRequestException("you can not this discount code in basket")
+      }
+    }else if(!discount.supplierId){
+      const generalDiscount = await this.userBasketRepository.findOne({
+        relations: {
+          discount: true
+        },
+        where: {
+          userId,
+          discount: {
+            id:Not(IsNull()),
+            supplierId: IsNull()
+          }
+        }
+      })
+      if(generalDiscount){
+        throw new BadRequestException("Already used general discount")
       }
     }
     await this.userBasketRepository.insert({
