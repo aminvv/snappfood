@@ -21,26 +21,17 @@ export class BasketController {
   addDiscount(@Body() discountBasketDto: DiscountBasketDto) {
     return this.basketService.addDiscount(discountBasketDto);
   }
+  @Get('/get-basket')
+  getBasket() {
+    return this.basketService.getBasket();
+  }
   @Post('/delete-discountToBasket')
   @ApiConsumes(swaggerConsumes.UrlEncoded)
   removeDiscount(@Body() discountBasketDto: DiscountBasketDto) {
     return this.basketService.removeDiscount(discountBasketDto);
   }
 
-  @Get()
-  findAll() {
-    return this.basketService.findAll();
-  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.basketService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBasketDto: UpdateBasketDto) {
-    return this.basketService.update(+id, updateBasketDto);
-  }
 
   @Delete('/delete-item-from-basket') 
    @ApiConsumes(swaggerConsumes.UrlEncoded)

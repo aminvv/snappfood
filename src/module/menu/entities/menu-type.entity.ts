@@ -15,5 +15,5 @@ supplierId:number
 @ManyToOne(()=>SupplierEntity,supplier=>supplier.menuType,{onDelete:"CASCADE"})
 supplier:SupplierEntity
 @OneToMany(()=>MenuEntity,menuFood=>menuFood. type)
-menuItem:MenuEntity[]
+food:MenuEntity[]
 }

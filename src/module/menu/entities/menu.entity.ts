@@ -15,12 +15,14 @@ export class MenuEntity extends BaseEntityCustom {
     image: string
     @Column()
     key: string
+    @Column({type:"double", default:0})
+    discount:number
+    @Column({default:false})
+    is_active:boolean
     @Column({ nullable: true, unique: true })
     slug: string
     @Column({ type: "double", nullable: true })
     price: number
-    @Column({ type: "double", default: 0 })
-    discount: number
     @Column()
     description: string
     @Column({ type: "double", nullable: true })
@@ -29,7 +31,7 @@ export class MenuEntity extends BaseEntityCustom {
     typeId: number
     @Column()
     supplierId: number
-    @ManyToOne(() => MenuTypeEntity, type => type.menuItem)
+    @ManyToOne(() => MenuTypeEntity, type => type.food)
     type: MenuTypeEntity
     @ManyToOne(() => SupplierEntity, type => type.menu)
     supplier: SupplierEntity
