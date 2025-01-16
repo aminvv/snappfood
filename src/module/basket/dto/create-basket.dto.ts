@@ -6,6 +6,5 @@ export class BasketDto {
 }
 export class DiscountBasketDto {
     @ApiProperty()
-    code
-    :number
+    code:number
 }

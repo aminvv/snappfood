@@ -8,11 +8,12 @@ import { AuthModule } from '../auth/auth.module';
 import { MenuService } from '../menu/service/menu.service';
 import { MenuModule } from '../menu/menu.module';
 import { S3Module } from '../s3/s3.module';
+import { DiscountService } from '../discount/discount.service';
 
 
 @Module({
   imports:[TypeOrmModule.forFeature([UserBasketEntity,DiscountEntity]),AuthModule,MenuModule,S3Module],
   controllers: [BasketController],
-  providers: [BasketService,MenuService],
+  providers: [BasketService,MenuService,DiscountService],
 })
 export class BasketModule {}
