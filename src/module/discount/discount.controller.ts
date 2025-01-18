@@ -11,8 +11,8 @@ export class DiscountController {
 
   @Post()
   @ApiConsumes(swaggerConsumes.UrlEncoded)
-  create(@Body() createDiscountDto: CreateDiscountDto) {
-    return this.discountService.create(createDiscountDto);
+  addDiscount(@Body() createDiscountDto: CreateDiscountDto) {
+    return this.discountService.addDiscount(createDiscountDto);
   }
 
   @Get()

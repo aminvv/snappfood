@@ -26,4 +26,5 @@ export class DiscountEntity extends BaseEntityCustom{
     type:string
     @OneToMany(()=>UserBasketEntity,basket=>basket.discount)
     basket:UserBasketEntity[]
+  foodId: number | (() => string);
 }

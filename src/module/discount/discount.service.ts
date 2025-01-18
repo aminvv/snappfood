@@ -14,7 +14,7 @@ export class DiscountService {
     @InjectRepository(DiscountEntity) private discountRepository: Repository<DiscountEntity>,
 
   ) { }
-  async create(createDiscountDto: CreateDiscountDto) {
+  async addDiscount(createDiscountDto: CreateDiscountDto) {
     const { amount, code, expiresIn, limit, percent, supplierId, usage } = createDiscountDto
     await this.checkExistCode(code)
     const discountObject: DeepPartial<DiscountEntity> = { code }
@@ -50,7 +50,7 @@ export class DiscountService {
   }
   async findOneByCode(code: number) {
     const discount = await this.discountRepository.findOneBy({ code })
-    if (!discount) throw new ConflictException("not found discount code")
+    if (!discount) throw new NotFoundException("not found discount code")
       return discount
   }
 
