@@ -10,4 +10,7 @@ Feedback="feedback",
 MenuType="menu_type",
 Discount="discount",
 UserBasket="user_basket",
+Order="order",
+OrderItems="order_items",
+Payment="payment",
 }      

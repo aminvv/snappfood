@@ -5,6 +5,8 @@ import { MenuTypeEntity, } from "./menu-type.entity";
 import { SupplierEntity } from "src/module/supplier/entities/supplier.entity";
 import { FeedbackEntity } from "./feedback.entity";
 import { UserBasketEntity } from "src/module/basket/entities/user-basket.entity";
+import { OrderItemStatus } from "src/module/order/enum/status.enum";
+import { OrderItemsEntity } from "src/module/order/entities/order-items.entity";
 
 @Entity(EntityName.Menu)
 export class MenuEntity extends BaseEntityCustom {
@@ -15,10 +17,10 @@ export class MenuEntity extends BaseEntityCustom {
     image: string
     @Column()
     key: string
-    @Column({type:"double", default:0})
-    discount:number
-    @Column({default:false})
-    is_active:boolean
+    @Column({ type: "double", default: 0 })
+    discount: number
+    @Column({ default: false })
+    is_active: boolean
     @Column({ nullable: true, unique: true })
     slug: string
     @Column({ type: "double", nullable: true })
@@ -39,5 +41,7 @@ export class MenuEntity extends BaseEntityCustom {
     feedback: FeedbackEntity[]
     @OneToMany(() => UserBasketEntity, baskets => baskets.food)
     baskets: UserBasketEntity[]
+    @OneToMany(() =>OrderItemsEntity, orderItems => orderItems.food)
+    orderItems: OrderItemsEntity[]
 
 }

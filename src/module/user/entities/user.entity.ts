@@ -5,6 +5,8 @@ import { UserAddressEntity } from "./address.entity";
 import { OtpEntity } from "./user-otp.entity";
 import { FeedbackEntity } from "src/module/menu/entities/feedback.entity";
 import { UserBasketEntity } from "src/module/basket/entities/user-basket.entity";
+import { PaymentEntity } from "src/module/payment/entities/payment.entity";
+import { OrderEntity } from "src/module/order/entities/order.entity";
 
 @Entity(EntityName.User)
 export class UserEntity extends BaseEntityCustom{
@@ -36,6 +38,10 @@ export class UserEntity extends BaseEntityCustom{
     feedback:FeedbackEntity[]
     @OneToMany(()=>UserBasketEntity,basket=>basket.user)
     basket:UserBasketEntity[]
+    @OneToMany(()=>OrderEntity,payment=>payment.user)
+    payment:OrderEntity[]
+    @OneToMany(()=>PaymentEntity,payment=>payment.user)
+    payments:PaymentEntity[]
     @OneToOne(() => OtpEntity, otp => otp.user)
     @JoinColumn({ name: "otpId" })
     otp: OtpEntity 
