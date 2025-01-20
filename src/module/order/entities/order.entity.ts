@@ -11,7 +11,7 @@ import { PaymentEntity } from "src/module/payment/entities/payment.entity";
 export class OrderEntity extends BaseEntityCustom{
     @Column()
     userId:number
-    @Column()
+    @Column({nullable:true})
     addressId:number
     @Column()
     payment_amount:number

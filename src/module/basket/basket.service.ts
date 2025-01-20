@@ -153,17 +153,11 @@ export class BasketService {
     return {
       total_amount,
       total_discount_amount,
+      payment_amount,
       food_list,
       generalDiscountDetail,
-      payment_amount
     }
   }
-
-
-
-
-
-
 
 
 
@@ -257,120 +251,6 @@ export class BasketService {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // async addDiscount(discountBasketDto: DiscountBasketDto) {
-  //   const { id: userId } = this.request.user
-  //   const { code } = discountBasketDto
-  //   const discount = await this.discountService.findOneByCode(code)
-  //   if (!discount.active) {
-  //     throw new BadRequestException("this discount code is not active")
-  //   }
-  //   if (discount.limit && discount.limit <= discount.usage) {
-  //     throw new BadRequestException("the capacity of this discount code is full")
-  //   }
-  //   if (discount?.expiresIn && discount?.expiresIn.getTime() <= new Date().getTime()) {
-  //     throw new BadRequestException("this discount code is expired")
-  //   }
-  //   const existingRecords = await this.userBasketRepository.find();
-  //   console.log(existingRecords);
-
-  //   const userBasketDiscount = await this.userBasketRepository.findBy({
-  //      discountId: discount.id, userId 
-  //   })
-  //   if (userBasketDiscount) throw new BadRequestException("already used discount ")
-  //   if (discount.supplierId) {
-  //     const discountsOfSupplier = await this.userBasketRepository.findOne({
-  //       relations: {
-  //         discount: true
-  //       },
-  //       where: {
-  //         userId,
-  //         discount: {
-  //           supplierId: discount.supplierId
-  //         }
-  //       }
-  //     })
-
-
-  //     if (discountsOfSupplier) {
-  //       throw new BadRequestException("you can not user several of supplier discount")
-  //     }
-  //     const userBasket = await this.userBasketRepository.findOne({
-  //       relations: {
-  //         food: true
-  //       },
-  //       where: {
-  //         userId,
-
-  //         food: { supplierId: discount.supplierId },
-  //       }
-
-  //     })
-  //     if (!userBasket) {
-  //       throw new BadRequestException("you can not this discount code in basket")
-  //     }
-  //     if (userBasket) {
-  //       userBasket.discountId = discount.id;
-  //       await this.userBasketRepository.save(userBasket);
-  //     }
-  //   } else if (!discount.supplierId) {
-  //     const generalDiscount = await this.userBasketRepository.findOne({
-  //       relations: {
-  //         discount: true
-  //       },
-  //       where: {
-  //         userId,
-  //         discount: {
-  //           id: Not(IsNull()),
-  //           supplierId: IsNull()
-  //         }
-  //       }
-  //     })
-
-  //     if (generalDiscount) {
-  //       throw new BadRequestException("Already used general discount")
-  //     }
-
-  //     await this.userBasketRepository.insert({
-  //       discountId: discount.id,
-  //       userId,
-  //       foodId: discount.foodId,
-  //       count: 1
-  //     })
-  //   }
-  //   return {
-  //     message: "you added discount code successfully"
-  //   }
-  // }
 
 
 

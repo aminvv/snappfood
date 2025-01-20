@@ -23,6 +23,9 @@ namespace NodeJS {
         ACCESS_TOKEN_FOR_SUPPLIER: string
         REFRESH_TOKEN_FOR_SUPPLIER: string
 
-
-    }
+        //ZARINNPAL
+        ZARINNPAL_VERIFY_URL:string
+        ZARINNPAL_REQUEST_URL :string
+        ZARINNPAL_MERCHANT_ID:string
+}
 }

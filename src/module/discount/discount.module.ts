@@ -9,5 +9,6 @@ import { UserBasketEntity } from '../basket/entities/user-basket.entity';
   imports:[TypeOrmModule.forFeature([DiscountEntity,UserBasketEntity]),],
   controllers: [DiscountController],
   providers: [DiscountService],
+  exports:[DiscountService]
 })
 export class DiscountModule {}
