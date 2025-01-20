@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpServer, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpServer, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { catchError, lastValueFrom, map } from 'rxjs';
 
 
 @Injectable()
@@ -10,7 +11,35 @@ constructor(
 ){}
 
 async sendRequest(data?:any){
-this.httpService.post(process.env.ZARINNPAL_REQUEST_URL,data)
+  const{amount,description,user}=data
+  const option={
+    merchant_id:process.env.ZARINNPAL_MERCHANT_ID,
+    amount:amount,
+    description,
+    metadata:{
+      email:user?.email??"",
+      mobile:user?.mobile??""
+    },
+    callback_url:"http://localhost:3000/payment/verify"
+  }
+const result=await lastValueFrom(
+  this.httpService.post(process.env.ZARINNPAL_REQUEST_URL,data)
+  .pipe(map(res=>res.data))
+  .pipe(catchError(err=>{
+    console.log(err);
+    
+    throw new InternalServerErrorException("zarinnpal error")
+  }))
+)
+const{authority,code}=result.data
+if(code ==100 &&authority){
+  return{
+    code,
+    authority,
+    gateWayUrl:`${process.env.ZARINNPAL_GATEWAY_URL}/${authority}`
+  }
+}
+throw new BadRequestException("connection failed in zarinnpal")
 }
 
 async verifyRequest(data?:any){
