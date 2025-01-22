@@ -12,11 +12,14 @@ import { DiscountService } from '../discount/discount.service';
 import { MenuEntity } from '../menu/entities/menu.entity';
 import { MenuTypeEntity } from '../menu/entities/menu-type.entity';
 import { DiscountModule } from '../discount/discount.module';
+import { OrderService } from '../order/order.service';
+import { UserAddressEntity } from '../user/entities/address.entity';
 
 
 @Module({
-  imports:[TypeOrmModule.forFeature([UserBasketEntity,DiscountEntity,MenuEntity,MenuTypeEntity,]),AuthModule,MenuModule,S3Module,DiscountModule],
+  imports:[TypeOrmModule.forFeature([UserBasketEntity,DiscountEntity,UserAddressEntity,MenuEntity,MenuTypeEntity,]),AuthModule,MenuModule,S3Module,DiscountModule],
   controllers: [BasketController],
-  providers: [BasketService,MenuService,DiscountService],
+  providers: [BasketService,MenuService,DiscountService,OrderService],
+  exports: [BasketService, TypeOrmModule],
 })
 export class BasketModule {}

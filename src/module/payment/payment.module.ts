@@ -16,6 +16,10 @@ import { S3Service } from '../s3/s3.service';
 import { ZarinnpalService } from '../http/zarinnpal.service';
 import { HttpApiModule } from '../http/http.module';
 import { DiscountService } from '../discount/discount.service';
+import { OrderItemsEntity } from '../order/entities/order-items.entity';
+import { UserAddressEntity } from '../user/entities/address.entity';
+import { OrderService } from '../order/order.service';
+import { BasketModule } from '../basket/basket.module';
 
 @Module({
     imports:[AuthModule,HttpApiModule,TypeOrmModule.forFeature([
@@ -25,7 +29,10 @@ import { DiscountService } from '../discount/discount.service';
       MenuEntity,
       MenuTypeEntity,
       OrderEntity,
-    ])],
+      OrderItemsEntity,
+      UserAddressEntity,
+
+    ]),BasketModule],
   controllers: [PaymentController],
   providers: [PaymentService,
     BasketService,
@@ -34,6 +41,7 @@ import { DiscountService } from '../discount/discount.service';
     MenuService,
     MenuTypeService,
     S3Service,
+    OrderService,
   ],
 })
 export class PaymentModule {}
