@@ -8,6 +8,7 @@ import { Request } from 'express';
 import { UserAddressEntity } from '../user/entities/address.entity';
 import { OrderEntity } from './entities/order.entity';
 import { OrderStatus } from './enum/status.enum';
+import { PaymentDto } from '../payment/dto/payment.dto';
 
 
 @Injectable({scope:Scope.REQUEST})
@@ -17,16 +18,17 @@ export class OrderService {
     @InjectRepository(UserAddressEntity)private userAddressRepository:Repository<UserAddressEntity>,
     private datasource:DataSource
   ){}
-  async create(basketType: BasketType,userAddressId:number,description:string) {
+  async create(basketType: BasketType,paymentDto:PaymentDto) {
+    const{addressId,description=undefined}=paymentDto
     const queryRunner=this.datasource.createQueryRunner()
      await queryRunner.connect()
     try {
       const{id:userId}=this.request.user
       const {payment_amount,total_amount,food_list,total_discount_amount}=basketType
-      const address=await this.userAddressRepository.findOneBy({id:userAddressId,userId})
+      const address=await this.userAddressRepository.findOneBy({id:addressId,userId})
       if(!address)throw new NotFoundException("not found address")
         let order=await queryRunner.manager.create(OrderEntity,{
-          addressId:userAddressId,
+          addressId,
           description,
           total_amount,
            userId,
@@ -52,9 +54,8 @@ export class OrderService {
       }
       await queryRunner.commitTransaction()
       await queryRunner.release()
-      return{
-        message:"create Order"
-      }
+      return order
+      
     } catch (error) {
       await queryRunner.rollbackTransaction()
       await queryRunner.release()
